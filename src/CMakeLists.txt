@@ -4,4 +4,4 @@ set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")
 
 project(main)
 
-add_executable(main ../main.cpp )
+add_executable(main main.cpp Token.hpp Tokenizer.hpp Tokenizer.cpp)

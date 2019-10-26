@@ -1,10 +1,10 @@
-all: build ru
+all: build run
 
 build:
 	mkdir build && cd build && cmake -G "MinGW Makefiles" ../src/ && make
 
 run:
-	cd build && ./main
+	cd build && main.exe
 
 build_test:
 	mkdir build && cd build && cmake -G "MinGW Makefiles" ../ut/ && make
