@@ -49,3 +49,7 @@ LETTER -> "D"<br/>
 LETTER -> "E"<br/>
 LETTER -> "F"<br/>
 LETTER -> "G"<br/>
+<br/>
+COLON -> ":"<br/>
+SEMICOLON -> ";"<br/>
+COMMA -> ","<br/>

@@ -47,3 +47,7 @@ LETTER -> "D"
 LETTER -> "E"
 LETTER -> "F"
 LETTER -> "G"
+
+COLON -> ":"
+SEMICOLON -> ";"
+COMMA -> ","
