@@ -1,10 +1,20 @@
 #include "Tokenizer.hpp"
+#include <string.h>
 
 int main()
 {
-	Tokenizer tr("var i:integer; a, b: char;");
-	tr.next_token();
-	std::cout << tr.cur_token().value() << std::endl;
-	std::cout << tr.cur_index() << std::endl;
+	std::string tmp = "var i	:integer; a, b   : char;";
+	Tokenizer tr(tmp);
+	while (true)
+	{
+		Token t = tr.cur_token();
+		std::cout << "VALUE: " << t.value() << " TYPE: " << t.type_str() << " Ind: " << tr.cur_index() << std::endl;
+		if (t.type() == Token::TYPE::END)
+		{
+			break;
+		}
+		tr.next_token();
+
+	}
 	return 0;
 }

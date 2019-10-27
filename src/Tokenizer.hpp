@@ -37,7 +37,7 @@ private:
 
 	void next_char();
 
-	bool is_blank(char ch)
+	bool is_blank(char ch) const
 	{
 		return std::isspace(static_cast<unsigned char>(ch));
 	}
@@ -50,12 +50,22 @@ private:
 	void back()
 	{
 		m_cur_index = m_mark;
+		m_cur_char = m_ss[m_cur_index];
 	}
 
 	void jump(std::size_t step)
 	{
-		m_cur_index += step;
-		m_cur_char = m_ss[m_cur_index];
+		if (m_cur_index + step < m_ss.size())
+		{
+			m_cur_index += step;
+			m_cur_char = m_ss[m_cur_index];
+		}
+		else
+		{
+			std::cerr << "Can't jump, cause step is more then len of string. Len is" <<
+			             m_ss.size() << " Step is " << step << std::endl;
+		}
+		
 	}
 
 	bool check(std::string const& s);

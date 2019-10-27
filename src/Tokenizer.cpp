@@ -1,4 +1,5 @@
 #include "Tokenizer.hpp"
+#include <sstream>
 
 void Tokenizer::next_char()
 {
@@ -9,7 +10,8 @@ void Tokenizer::next_char()
 	}
 	else
 	{
-		std::cerr << "Index is more then ss.size. " << "Index : " << cur_index() << ", size" << m_ss.size() << std::endl;
+		m_cur_char = '\0';
+		std::cerr << "Index is more then ss.size. " << "Index : " << cur_index() << ", size " << m_ss.size() << std::endl;
 	}
 }
 
@@ -23,6 +25,9 @@ void Tokenizer::next_token()
 
 	switch (cur_char())
 	{
+	case '\0':
+		m_token = Token("", TYPE::END);
+		break;
 	case 'v':
 		if (try_take_token("var", TYPE::VAR))
 		{
@@ -41,29 +46,35 @@ void Tokenizer::next_token()
 		m_token = Token(",", TYPE::COMMA);
 		break;
 	case 'i':
-		if (try_take_token("integer", TYPE::VAR))
+		if (try_take_token("integer", TYPE::TYPE))
 		{
 			break;
 		}
 	case 'r':
-		if (try_take_token("real", TYPE::VAR))
+		if (try_take_token("real", TYPE::TYPE))
 		{
 			break;
 		}
 	case 'c':
-		if (try_take_token("char", TYPE::VAR))
+		if (try_take_token("char", TYPE::TYPE))
 		{
 			break;
 		}
 	case 'b':
-		if (try_take_token("boolean", TYPE::VAR))
+		if (try_take_token("boolean", TYPE::TYPE))
 		{
 			break;
 		}
 	default:
 		if (std::isalpha(cur_char()))
 		{
-			// take name
+			std::stringstream ss;
+			while (std::isalnum(cur_char()))
+			{
+				ss << cur_char();
+				next_char();
+			}
+			m_token = Token(ss.str(), TYPE::NAME);
 		}
 		else
 		{
@@ -75,7 +86,7 @@ void Tokenizer::next_token()
 
 bool Tokenizer::check(std::string const& s)
 	{
-		if (s.empty())
+		if (s.empty() || m_ss.empty())
 		{
 			return false;
 		}
