@@ -15,25 +15,82 @@ void Tokenizer::next_char()
 
 void Tokenizer::next_token()
 {
+	using TYPE = Token::TYPE;
 	while (is_blank(cur_char()))
 	{
 		next_char();
 	}
+
 	switch (cur_char())
 	{
 	case 'v':
+		if (try_take_token("var", TYPE::VAR))
 		{
-			std::string s = "var";
-			if (check(s))
-			{
-				m_token = Token(s, Token::TYPE::VAR);
-				jump(s.size());
-			}
+			break;
 		}
+	case ':':
+		next_char();
+		m_token = Token(":", TYPE::COLLON);
 		break;
-	
+	case ';':
+		next_char();
+		m_token = Token(";", TYPE::SEMICOLLON);
+		break;
+	case ',':
+		next_char();
+		m_token = Token(",", TYPE::COMMA);
+		break;
+	case 'i':
+		if (try_take_token("integer", TYPE::VAR))
+		{
+			break;
+		}
+	case 'r':
+		if (try_take_token("real", TYPE::VAR))
+		{
+			break;
+		}
+	case 'c':
+		if (try_take_token("char", TYPE::VAR))
+		{
+			break;
+		}
+	case 'b':
+		if (try_take_token("boolean", TYPE::VAR))
+		{
+			break;
+		}
 	default:
-		std::cerr << "Unkown token" << std::endl;
+		if (std::isalpha(cur_char()))
+		{
+			// take name
+		}
+		else
+		{
+			std::cerr << "Unkown token" << std::endl;
+		}
 		break;
 	}
 }
+
+bool Tokenizer::check(std::string const& s)
+	{
+		if (s.empty())
+		{
+			return false;
+		}
+
+		if (cur_index() + s.size() - 1 < m_ss.size())
+		{
+			bool ans = true;
+			mark();
+			for (auto c : s)
+			{
+				ans &= cur_char() == c;
+				next_char();
+			}
+			back();
+			return ans;
+		}
+		return false;
+	}

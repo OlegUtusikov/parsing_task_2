@@ -13,7 +13,7 @@ public:
 
 	void next_token();
 	
-	Token getToken() const
+	Token cur_token() const
 	{
 		return m_token;
 	}
@@ -55,26 +55,18 @@ private:
 	void jump(std::size_t step)
 	{
 		m_cur_index += step;
+		m_cur_char = m_ss[m_cur_index];
 	}
 
-	bool check(std::string const& s)
+	bool check(std::string const& s);
+
+	bool try_take_token(std::string const& s, Token::TYPE type)
 	{
-		if (s.empty())
+		if (check(s))
 		{
-			return false;
-		}
-
-		if (cur_index() + s.size() - 1 < m_ss.size())
-		{
-			mark();
-			bool ans = true;
-			for (auto c : s)
-			{
-				ans &= cur_char() == c;
-			}
-			back();
-			return ans;
-
+			m_token = Token(s, type);
+			jump(s.size());
+			return true;
 		}
 		return false;
 	}

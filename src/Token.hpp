@@ -15,15 +15,18 @@ public:
 		VAR,
 		END
 	};
-	
-	Token()
+
+	Token(): m_value("empty"), m_type(TYPE::END)
 	{
-		m_type = TYPE::END;
-		m_value = "";
 	}
 
 	Token(std::string const& value, TYPE type): m_value(value), m_type(type)
 	{}
+
+	std::string value() const
+	{
+		return m_value;
+	}
 
 private:
 	TYPE m_type;
