@@ -26,3 +26,9 @@ FIRST(NAME) = {LETTER}</br>
 FIRST(V) = {LETTER}</br>
 FIRST(BLOCK) = {EPS, LETTER}</br>
 FIRST(S) = {VAR}</br>
+
+FOLLOW(NAME') = {}
+FOLLOW(NAME) = {}
+FOLLOW(V) = {}
+FOLLOW(BLOCK) = {}
+FOLLOW(S) = {}
