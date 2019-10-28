@@ -3,7 +3,7 @@
 
 int main()
 {
-	std::string tmp = "var i	:integer; a, b   : char;";
+	std::string tmp = "var i	:integer; a, b   : char; realB, realinteger: real;";
 	Tokenizer tr(tmp);
 	while (true)
 	{

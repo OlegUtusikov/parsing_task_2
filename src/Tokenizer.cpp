@@ -91,7 +91,7 @@ bool Tokenizer::check(std::string const& s)
 			return false;
 		}
 
-		if (cur_index() + s.size() - 1 < m_ss.size())
+		if (cur_index() + s.size() - 1 == m_ss.size())
 		{
 			bool ans = true;
 			mark();
@@ -100,7 +100,11 @@ bool Tokenizer::check(std::string const& s)
 				ans &= cur_char() == c;
 				next_char();
 			}
-			back();
+			if (cur_index() + s.size() - 1 < m_ss.size() - 1)
+			{
+				ans &= !std::isalnum(cur_char());
+			}
+			back(); 
 			return ans;
 		}
 		return false;

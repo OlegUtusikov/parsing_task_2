@@ -17,11 +17,11 @@ public:
 		EPS
 	};
 
-	Token(): m_value("empty"), m_type(TYPE::EPS)
+	Token(): m_value("empty"), m_type(TYPE::EPS), m_is_term(true)
 	{
 	}
 
-	Token(std::string const& value, TYPE type): m_value(value), m_type(type)
+	Token(std::string const& value, TYPE type): m_value(value), m_type(type), m_is_term(true)
 	{}
 
 	std::string value() const
@@ -69,7 +69,18 @@ public:
 		}
 	}
 
+	bool is_term() const
+	{
+		return m_is_term;
+	}
+
+	void set_term(bool val)
+	{
+		m_is_term = val;
+	}
+
 private:
 	TYPE m_type;
 	std::string m_value;
+	bool m_is_term;
 };
