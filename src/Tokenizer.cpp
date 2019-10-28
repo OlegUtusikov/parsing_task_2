@@ -85,27 +85,31 @@ void Tokenizer::next_token()
 }
 
 bool Tokenizer::check(std::string const& s)
+{
+	if (s.empty() || m_ss.empty())
 	{
-		if (s.empty() || m_ss.empty())
-		{
-			return false;
-		}
-
-		if (cur_index() + s.size() - 1 == m_ss.size())
-		{
-			bool ans = true;
-			mark();
-			for (auto c : s)
-			{
-				ans &= cur_char() == c;
-				next_char();
-			}
-			if (cur_index() + s.size() - 1 < m_ss.size() - 1)
-			{
-				ans &= !std::isalnum(cur_char());
-			}
-			back(); 
-			return ans;
-		}
 		return false;
 	}
+
+	if (cur_index() + s.size() - 1 < m_ss.size())
+	{
+		bool ans = true;
+		mark();
+		for (auto c : s)
+		{
+			ans &= cur_char() == c;
+			if (!ans)
+			{
+				break;
+			}
+			next_char();
+		}
+		if (cur_index() + s.size() - 1 < m_ss.size() - 1)
+		{
+			ans &= !std::isalnum(cur_char());
+		}
+		back(); 
+		return ans;
+	}
+	return false;
+}

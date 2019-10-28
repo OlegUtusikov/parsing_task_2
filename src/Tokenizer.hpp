@@ -4,10 +4,19 @@
 #include <iostream>
 #include "Token.hpp"
 
-class Tokenizer {
+class Tokenizer
+{
 public:
-	Tokenizer(std::string const& ss) : m_ss(ss), m_cur_index(-1), m_mark(-1)
+	Tokenizer(std::string const& ss)
 	{
+		init(ss);
+	}
+
+	void init(std::string const& ss)
+	{
+		m_ss = ss;
+		m_cur_index = -1;
+		m_mark = -1;
 		next_char();
 	}
 

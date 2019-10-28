@@ -5,14 +5,13 @@
 class Token {
 public:
 	enum class TYPE {
-		DIGIT,
-		LETTER,
+		VAR,
+		BLOCK,
 		NAME,
 		TYPE,
 		COLLON,
 		COMMA,
 		SEMICOLLON,
-		VAR,
 		END,
 		EPS
 	};
@@ -43,10 +42,8 @@ public:
 	{
 		switch (m_type)
 		{
-		case TYPE::DIGIT:
-			return "DIGIT";
-		case TYPE::LETTER:
-			return "LETTER";
+		case TYPE::VAR:
+			return "VAR";
 		case TYPE::NAME:
 			return "NAME";
 		case TYPE::TYPE:
@@ -57,8 +54,6 @@ public:
 			return "COMMA";
 		case TYPE::SEMICOLLON:
 			return "SEMICOLLON";
-		case TYPE::VAR:
-			return "VAR";
 		case TYPE::END:
 			return "END";
 		case TYPE::EPS:
