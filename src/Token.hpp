@@ -74,6 +74,11 @@ public:
 		m_is_term = val;
 	}
 
+	std::string str() const
+	{
+		return type_str() + " (" + value() + ")";
+	}
+
 private:
 	TYPE m_type;
 	std::string m_value;

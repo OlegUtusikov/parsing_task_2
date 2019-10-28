@@ -1,8 +1,8 @@
 S -> VAR BLOCK</br>
-BLOCK -> V</br>
-BLOCK -> V BLOCK</br>
+BLOCK -> V SEMICOLON</br>
+BLOCK -> V SEMICOLON BLOCK</br>
 BLOCK -> EPS</br>
-V -> NAME COLON TYPE SEMICOLON</br>
+V -> NAME COLON TYPE</br>
 V -> NAME COMMA V</br>
 </br>
 /*</br>

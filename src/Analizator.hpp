@@ -10,14 +10,14 @@ public:
 	Analizator() : tr("")
 	{}
 
-	Node* parse(std::string const& s);
-
+	Node parse(std::string const& s);
 private:
 	using TYPE = Token::TYPE;
 	Tokenizer tr;
 	// recurse parse methods
-
-	Node* var();
-	Node* block();
-	Node* v();
+	void print_error() const;
+	void print_info(std::string const& s) const;
+	Node var();
+	Node block();
+	Node v();
 };

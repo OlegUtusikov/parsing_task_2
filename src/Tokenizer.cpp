@@ -3,7 +3,7 @@
 
 void Tokenizer::next_char()
 {
-	if (m_cur_index  + 1 < m_ss.size())
+	if (m_cur_index  + 1 < (int)m_ss.size())
 	{
 		++m_cur_index;
 		m_cur_char = m_ss[m_cur_index];
@@ -11,7 +11,6 @@ void Tokenizer::next_char()
 	else
 	{
 		m_cur_char = '\0';
-		std::cerr << "Index is more then ss.size. " << "Index : " << cur_index() << ", size " << m_ss.size() << std::endl;
 	}
 }
 
@@ -91,7 +90,7 @@ bool Tokenizer::check(std::string const& s)
 		return false;
 	}
 
-	if (cur_index() + s.size() - 1 < m_ss.size())
+	if (cur_index() + (int)s.size() - 1 < (int)m_ss.size())
 	{
 		bool ans = true;
 		mark();
@@ -104,10 +103,7 @@ bool Tokenizer::check(std::string const& s)
 			}
 			next_char();
 		}
-		if (cur_index() + s.size() - 1 < m_ss.size() - 1)
-		{
-			ans &= !std::isalnum(cur_char());
-		}
+		ans &= !std::isalnum(cur_char());
 		back(); 
 		return ans;
 	}
