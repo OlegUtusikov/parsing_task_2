@@ -25,13 +25,22 @@ public:
 		m_childs.emplace_back(ch);
 	}
 
-	void print(int cnt) const
+	void print() const
+	{	
+		std::cout << "#";
+		print_helper(1);
+		std::cout << std::endl;
+	}
+	
+	private:
+	void print_helper(int cnt) const
 	{
-		print_blanks(cnt);
-		std::cout << m_value << std::endl;
-		for(Node pCh: m_childs)
+		std::cout << "---> " << m_value << std::endl;
+		for (Node pCh: m_childs)
 		{
-			pCh.print(cnt + 1);
+			print_blanks(cnt);
+			std::cout << "|";
+			pCh.print_helper(cnt + 1);
 		}
 	}
 
@@ -41,11 +50,9 @@ private:
 
 	void print_blanks(std::size_t cnt) const
 	{
-		for(std::size_t i = 0; i + 2 < cnt; ++i)
+		for (std::size_t i = 0; i < cnt; ++i)
 		{
 			std::cout << "    ";
 		}
-		std::cout << "|";
-		std::cout << "----";
 	}
 };

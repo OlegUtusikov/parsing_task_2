@@ -76,7 +76,7 @@ void Tokenizer::next_token()
 			m_token = Token(ss.str(), TYPE::NAME);
 		}
 		else
-		{
+		{	m_token = Token("" + m_cur_char, TYPE::ERROR);
 			std::cerr << "Unkown token" << std::endl;
 		}
 		break;

@@ -3,10 +3,11 @@
 
 int main()
 {
-	std::string tmp = "var i	:integer; a, b   : char; realB, realinteger: real;";
 	Analizator a;
-	Node node = a.parse(tmp);
-	std::cout << "GOOD" << std::endl;
-	node.print(0);
+	a.parse("var i \t \t \t:integer; a, b   : char; realB, realinteger: real;").print();
+	a.parse("var d, c, n \t \t\t \t , jf,k ,h,t    : boolean;").print();
+	a.parse("var  c  : 			       char;").print();
+	a.parse("\n       	var i: \r \n \t  integer;").print();
+	a.parse("  var ttt : integer;").print();
 	return 0;
 }

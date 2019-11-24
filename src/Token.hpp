@@ -13,7 +13,8 @@ public:
 		COMMA,
 		SEMICOLLON,
 		END,
-		EPS
+		EPS,
+		ERROR
 	};
 
 	Token(): m_value("empty"), m_type(TYPE::EPS), m_is_term(true)
@@ -58,6 +59,8 @@ public:
 			return "END";
 		case TYPE::EPS:
 			return "EPS";
+		case TYPE::ERROR:
+			return "ERROR";
 		default:
 			return "fuck";
 			break;
