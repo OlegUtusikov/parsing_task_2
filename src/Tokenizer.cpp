@@ -21,7 +21,6 @@ void Tokenizer::next_token()
 	{
 		next_char();
 	}
-
 	switch (cur_char())
 	{
 	case '\0':
@@ -76,8 +75,10 @@ void Tokenizer::next_token()
 			m_token = Token(ss.str(), TYPE::NAME);
 		}
 		else
-		{	m_token = Token("" + m_cur_char, TYPE::ERROR);
-			std::cerr << "Unkown token" << std::endl;
+		{	
+			std::stringstream ss;
+			ss << cur_char();
+			m_token = Token(ss.str(), TYPE::ERROR);
 		}
 		break;
 	}
@@ -90,7 +91,7 @@ bool Tokenizer::check(std::string const& s)
 		return false;
 	}
 
-	if (cur_index() + (int)s.size() - 1 < (int)m_ss.size())
+	if (cur_index() + s.size() < m_ss.size() + 1)
 	{
 		bool ans = true;
 		mark();
@@ -106,6 +107,17 @@ bool Tokenizer::check(std::string const& s)
 		ans &= !std::isalnum(cur_char());
 		back(); 
 		return ans;
+	}
+	return false;
+}
+
+bool Tokenizer::try_take_token(std::string const& s, Token::TYPE type)
+{
+	if (check(s))
+	{
+		m_token = Token(s, type);
+		jump(s.size());
+		return true;
 	}
 	return false;
 }

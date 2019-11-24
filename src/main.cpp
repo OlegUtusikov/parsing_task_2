@@ -9,5 +9,6 @@ int main()
 	a.parse("var  c  : 			       char;").print();
 	a.parse("\n       	var i: \r \n \t  integer;").print();
 	a.parse("  var ttt : integer;").print();
+	a.parse("  var ttt-adas : integer;").print();
 	return 0;
 }

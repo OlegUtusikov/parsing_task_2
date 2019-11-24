@@ -62,7 +62,7 @@ public:
 		case TYPE::ERROR:
 			return "ERROR";
 		default:
-			return "fuck";
+			return "oops";
 			break;
 		}
 	}

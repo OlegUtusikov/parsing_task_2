@@ -79,14 +79,5 @@ private:
 
 	bool check(std::string const& s);
 
-	bool try_take_token(std::string const& s, Token::TYPE type)
-	{
-		if (check(s))
-		{
-			m_token = Token(s, type);
-			jump(s.size());
-			return true;
-		}
-		return false;
-	}
+	bool try_take_token(std::string const& s, Token::TYPE type);
 };
