@@ -1,3 +1,0 @@
-C:/Users/utusikov/learning/parsing_task_2/build/CMakeFiles/edit_cache.dir
-C:/Users/utusikov/learning/parsing_task_2/build/CMakeFiles/main.dir
-C:/Users/utusikov/learning/parsing_task_2/build/CMakeFiles/rebuild_cache.dir
