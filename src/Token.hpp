@@ -8,6 +8,7 @@ public:
 		VAR,
 		BLOCK,
 		NAME,
+		NAME_TYPE,
 		TYPE,
 		COLLON,
 		COMMA,
@@ -61,6 +62,8 @@ public:
 			return "EPS";
 		case TYPE::ERROR:
 			return "ERROR";
+		case TYPE::NAME_TYPE:
+			return "Name and Type";
 		default:
 			return "oops";
 			break;
@@ -80,6 +83,10 @@ public:
 	std::string str() const
 	{
 		return type_str() + " (" + value() + ")";
+	}
+
+	void set_type(TYPE n_type) {
+		m_type = n_type;
 	}
 
 private:

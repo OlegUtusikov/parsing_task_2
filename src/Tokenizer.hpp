@@ -51,6 +51,8 @@ private:
 		return std::isspace(static_cast<unsigned char>(ch));
 	}
 
+	void drop_blanks();
+
 	void mark()
 	{
 		m_mark = m_cur_index;
@@ -80,4 +82,5 @@ private:
 	bool check(std::string const& s);
 
 	bool try_take_token(std::string const& s, Token::TYPE type);
+	bool try_take_type();
 };

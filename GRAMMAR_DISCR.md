@@ -1,8 +1,7 @@
 S -> VAR BLOCK</br>
-BLOCK -> V SEMICOLON</br>
 BLOCK -> V SEMICOLON BLOCK</br>
 BLOCK -> EPS</br>
-V -> NAME COLON TYPE</br>
+V -> NAME_TYPE</br>
 V -> NAME COMMA V</br>
 </br>
 /*</br>
@@ -15,6 +14,7 @@ V -> NAME COMMA V</br>
 	COLON -> ":"</br>
 	SEMICOLON -> ";"</br>
 	COMMA -> ","</br>
+	NAME_TYPE -> NAME COLON TYPE</br>
 */</br>
 </br>
 FIRST(V) = {NAME}</br>

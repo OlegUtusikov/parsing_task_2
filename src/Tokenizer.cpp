@@ -1,9 +1,17 @@
 #include "Tokenizer.hpp"
 #include <sstream>
 
+void Tokenizer::drop_blanks()
+{
+	while (is_blank(cur_char()))
+	{
+		next_char();
+	}
+}
+
 void Tokenizer::next_char()
 {
-	if (m_cur_index  + 1 < (int)m_ss.size())
+	if (m_cur_index + 1 < static_cast<int>(m_ss.size()))
 	{
 		++m_cur_index;
 		m_cur_char = m_ss[m_cur_index];
@@ -12,29 +20,53 @@ void Tokenizer::next_char()
 	{
 		m_cur_char = '\0';
 	}
+	//std:: cout << "next "  << m_cur_char << std::endl;
+}
+
+bool Tokenizer::try_take_type()
+{
+	using TYPE = Token::TYPE;
+	drop_blanks();
+	//std::cout << "type " << cur_char() << std::endl; 
+	if (cur_char() == 'i' && try_take_token("integer", TYPE::TYPE))
+	{
+		return true;
+	}
+	else if (cur_char() == 'r' && try_take_token("real", TYPE::TYPE))
+	{
+		return true;
+	}
+	else if (cur_char() == 'c' && try_take_token("char", TYPE::TYPE))
+	{
+		return true;
+	}
+	else if (cur_char() == 'b' && try_take_token("boolean", TYPE::TYPE))
+	{
+		return true;
+	}
+	else
+	{
+		std::stringstream ss;
+		ss << cur_char();
+		m_token = Token(ss.str(), TYPE::ERROR);
+		return false;
+	}
 }
 
 void Tokenizer::next_token()
 {
 	using TYPE = Token::TYPE;
-	while (is_blank(cur_char()))
-	{
-		next_char();
-	}
+	drop_blanks();
 	switch (cur_char())
 	{
 	case '\0':
-		m_token = Token("", TYPE::END);
+		m_token = Token("END", TYPE::END);
 		break;
 	case 'v':
 		if (try_take_token("var", TYPE::VAR))
 		{
 			break;
 		}
-	case ':':
-		next_char();
-		m_token = Token(":", TYPE::COLLON);
-		break;
 	case ';':
 		next_char();
 		m_token = Token(";", TYPE::SEMICOLLON);
@@ -43,42 +75,46 @@ void Tokenizer::next_token()
 		next_char();
 		m_token = Token(",", TYPE::COMMA);
 		break;
-	case 'i':
-		if (try_take_token("integer", TYPE::TYPE))
-		{
-			break;
-		}
-	case 'r':
-		if (try_take_token("real", TYPE::TYPE))
-		{
-			break;
-		}
-	case 'c':
-		if (try_take_token("char", TYPE::TYPE))
-		{
-			break;
-		}
-	case 'b':
-		if (try_take_token("boolean", TYPE::TYPE))
-		{
-			break;
-		}
 	default:
-		if (std::isalpha(cur_char()))
+		if (!try_take_type())
 		{
-			std::stringstream ss;
-			while (std::isalnum(cur_char()))
+			if (std::isalpha(cur_char()))
 			{
-				ss << cur_char();
-				next_char();
+				std::stringstream ss;
+				while (std::isalnum(cur_char()))
+				{
+					ss << cur_char();
+					next_char();
+				}
+
+				drop_blanks();
+				if (cur_char() == ':')
+				{
+					ss << cur_char();
+					next_char();
+					if (try_take_type())
+					{
+						ss << cur_token().value();
+						m_token = Token(ss.str(), TYPE::NAME_TYPE);
+					}
+					else
+					{
+						std::stringstream ss;
+						ss << "Expect type, but found '" << cur_token().value() << "'";
+						m_token = Token(ss.str(), TYPE::ERROR);
+					}
+				} 
+				else
+				{
+					m_token = Token(ss.str(), TYPE::NAME);
+				}
 			}
-			m_token = Token(ss.str(), TYPE::NAME);
-		}
-		else
-		{	
-			std::stringstream ss;
-			ss << cur_char();
-			m_token = Token(ss.str(), TYPE::ERROR);
+			else
+			{
+				std::stringstream ss;
+				ss << "'" << cur_char() << "' - unkown symbol";
+				m_token = Token(ss.str(), TYPE::ERROR);
+			}
 		}
 		break;
 	}
@@ -113,6 +149,7 @@ bool Tokenizer::check(std::string const& s)
 
 bool Tokenizer::try_take_token(std::string const& s, Token::TYPE type)
 {
+	//std::cout << "try take token " << s << std::endl;
 	if (check(s))
 	{
 		m_token = Token(s, type);

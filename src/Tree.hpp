@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "Token.hpp"
 
 class Node
 {
@@ -9,11 +10,18 @@ public:
 	Node(): m_value("empty_node"), m_childs(0)
 	{}
 
-	Node(std::string const& s): m_value(s), m_childs(0)
+	explicit Node(std::string const& str): m_value(str), m_childs(0)
 	{}
 
-	Node(std::string const& s, std::vector<Node> const& childs): m_value(s), m_childs(m_childs)
-	{}
+	explicit Node(Token const& t): m_value(t.value()), m_childs(0)
+	{
+		correct = t.type() != Token::TYPE::ERROR;
+	}
+
+	Node(Token const& t, std::vector<Node> const& childs): m_value(t.value()), m_childs(m_childs)
+	{
+		correct = t.type() != Token::TYPE::ERROR;
+	}
 
 	std::string get_value() const
 	{
@@ -31,8 +39,16 @@ public:
 		print_helper(1);
 		std::cout << std::endl;
 	}
+
+	bool check() const
+	{
+		return check_node(*this);
+	}
+
+	bool is_correct() const { return correct; }
 	
-	private:
+private:
+
 	void print_helper(int cnt) const
 	{
 		std::cout << "---> " << m_value << std::endl;
@@ -44,8 +60,19 @@ public:
 		}
 	}
 
+	bool check_node(Node n) const
+	{
+		bool res = n.is_correct();
+		for (auto ch : m_childs)
+		{
+			res |= ch.check();
+		}
+		return res;
+	}
+
 private:
 	std::string m_value;
+	bool correct { true };
 	std::vector<Node> m_childs;
 
 	void print_blanks(std::size_t cnt) const

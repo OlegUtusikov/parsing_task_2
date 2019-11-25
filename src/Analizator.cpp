@@ -22,40 +22,56 @@ Node Analizator::var()
 {
 	if (tr.cur_token().type() == TYPE::VAR)
 	{
-		Node res = Node(tr.cur_token().str());
+		Node res = Node("VAR");
 		tr.next_token();
 		res.add_child(block());
+		if (tr.cur_token().type() == TYPE::END)
+		{
+			res.add_child(Node(tr.cur_token()));
+		}
+		else
+		{
+			Token error = tr.cur_token();
+			error.set_type(Token::TYPE::ERROR);
+			return Node(error);
+		}
 		return res;
 	}
 	else
 	{
-		return Node(tr.cur_token().str());
+		return Node(tr.cur_token());
 	}
 }
 
 Node Analizator::block()
 {
 	Node res = Node("BLOCK");
-	if (tr.cur_token().type() == TYPE::NAME)
+	if (tr.cur_token().type() == TYPE::NAME || tr.cur_token().type() == TYPE::NAME_TYPE)
 	{
 		res.add_child(v());
 		if (tr.cur_token().type() == TYPE::SEMICOLLON)
 		{
-			res.add_child(Node(tr.cur_token().str()));
+			res.add_child(Node(tr.cur_token()));
 			tr.next_token();
-			res.add_child(block());
+			if (tr.cur_token().type() !=  TYPE::END)
+			{
+				res.add_child(block());
+			}
 			return res;
 		}
 		else
-		{
-			return Node(tr.cur_token().str());
+		{	
+			Token error = tr.cur_token();
+			error.set_type(Token::TYPE::ERROR);
+			return Node(error);
 		}
 	}
-	else if (tr.cur_token().type() == TYPE::END)
+	else
 	{
-		return Node(tr.cur_token().str());
+		Token error = tr.cur_token();
+		error.set_type(Token::TYPE::ERROR);
+		return Node(error);
 	}
-	return Node(tr.cur_token().str());
 }
 
 Node Analizator::v()
@@ -63,32 +79,29 @@ Node Analizator::v()
 	Node res = Node("V");
 	if (tr.cur_token().type() == TYPE::NAME)
 	{
-		res.add_child(Node(tr.cur_token().str()));
+		res.add_child(Node(tr.cur_token()));
 		tr.next_token();
-		if (tr.cur_token().type() == TYPE::COLLON)
+		if (tr.cur_token().type() == TYPE::COMMA)
 		{
-			res.add_child(Node(tr.cur_token().str()));
-			tr.next_token();
-			if (tr.cur_token().type() == TYPE::TYPE)
-			{
-				res.add_child(Node(tr.cur_token().str()));
-				tr.next_token();
-				return res;
-			}
-			else
-			{
-				return Node(tr.cur_token().str());
-			}
-			
-		}
-		else if (tr.cur_token().type() == TYPE::COMMA)
-		{
-			res.add_child(Node(tr.cur_token().str()));
+			res.add_child(Node(tr.cur_token()));
 			tr.next_token();
 			res.add_child(v());
 			return res;
 		}
-		return Node(tr.cur_token().str());
+		else 
+		{
+			Token error = tr.cur_token();
+			error.set_type(Token::TYPE::ERROR);
+			return Node(error);
+		}
 	}
-	return Node(tr.cur_token().str());
+	else if (tr.cur_token().type() == TYPE::NAME_TYPE) {
+		res.add_child(Node(tr.cur_token()));
+		tr.next_token();
+		return res;
+	} else {
+		Token error = tr.cur_token();
+		error.set_type(Token::TYPE::ERROR);
+		return Node(error);
+	}
 }
